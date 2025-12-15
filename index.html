@@ -36,17 +36,66 @@
         }
     </script>
 
+    <!-- ANTI-EXTENSION SCRIPT: Force Remove #crxjs-app -->
+    <script>
+        (function() {
+            // Fungsi untuk menghancurkan elemen pengganggu
+            const nukeUnwantedElements = () => {
+                // Target utama berdasarkan ID
+                const targetId = document.getElementById('crxjs-app');
+                if (targetId) {
+                    targetId.remove();
+                    // console.log('Elemen #crxjs-app berhasil dihapus paksa.');
+                }
+
+                // Target sekunder berdasarkan class spesifik yang Anda sebutkan
+                // Mencari div dengan class "min-w-[20rem] min-h-[30rem]"
+                const targetClass = document.querySelector('div[class*="min-w-[20rem]"][class*="min-h-[30rem]"]');
+                if (targetClass) {
+                    // Hapus parent-nya jika ada, atau hapus elemen itu sendiri
+                    const parent = targetClass.closest('#crxjs-app');
+                    if (parent) parent.remove();
+                    else targetClass.remove();
+                }
+            };
+
+            // 1. Jalankan Observer untuk memantau setiap perubahan di halaman (DOM)
+            // Jika ekstensi mencoba menyuntikkan elemen, kita hapus saat itu juga.
+            const observer = new MutationObserver((mutations) => {
+                nukeUnwantedElements();
+            });
+
+            // Mulai memantau seluruh dokumen
+            observer.observe(document.documentElement, {
+                childList: true,
+                subtree: true
+            });
+
+            // 2. Interval Check (Pembersihan Berkala)
+            // Cek setiap 500ms untuk memastikan elemen benar-benar hilang
+            setInterval(nukeUnwantedElements, 500);
+
+            // 3. Cek saat halaman selesai loading
+            window.addEventListener('DOMContentLoaded', nukeUnwantedElements);
+            window.addEventListener('load', nukeUnwantedElements);
+        })();
+    </script>
+
     <style>
-        /* FORCE HIDE Browser Extension Elements */
+        /* CSS FORCE HIDE (Lapis Kedua Pertahanan) */
+        /* Menyembunyikan elemen jika Script gagal menghapusnya (sangat jarang terjadi) */
         #crxjs-app, 
-        .min-w-\[20rem\].min-h-\[30rem\] {
+        div[class*="min-w-[20rem]"][class*="min-h-[30rem]"] {
             display: none !important;
             visibility: hidden !important;
+            opacity: 0 !important;
             width: 0 !important;
             height: 0 !important;
             pointer-events: none !important;
-            position: absolute !important;
-            z-index: -9999 !important;
+            position: fixed !important;
+            z-index: -2147483648 !important; /* Nilai Z-Index terendah */
+            clip-path: inset(100%) !important;
+            transform: scale(0) !important;
         }
 
         /* Custom Animations */
