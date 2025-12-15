@@ -37,22 +37,34 @@
         }
     </script>
 
-    <!-- ANTI-EXTENSION SCRIPT -->
+    <!-- ANTI-EXTENSION SCRIPT (Safe Mode) -->
     <script>
         (function() {
             const nukeUnwantedElements = () => {
-                const targetId = document.getElementById('crxjs-app');
-                if (targetId) targetId.remove();
-                const targetClass = document.querySelector('div[class*="min-w-[20rem]"][class*="min-h-[30rem]"]');
-                if (targetClass) {
-                    const parent = targetClass.closest('#crxjs-app');
-                    if (parent) parent.remove();
-                    else targetClass.remove();
+                try {
+                    const targetId = document.getElementById('crxjs-app');
+                    if (targetId) targetId.remove();
+                    
+                    // Gunakan selector yang lebih aman
+                    const targetClass = document.querySelector('div[class*="min-w-[20rem]"][class*="min-h-[30rem]"]');
+                    if (targetClass) {
+                        const parent = targetClass.closest('#crxjs-app');
+                        if (parent) parent.remove();
+                        else targetClass.remove();
+                    }
+                } catch (e) {
+                    // Ignore errors to prevent blocking UI
+                    console.warn("Anti-extension cleanup error:", e);
                 }
             };
+            
+            // Jalankan dengan observer
             const observer = new MutationObserver((mutations) => { nukeUnwantedElements(); });
             observer.observe(document.documentElement, { childList: true, subtree: true });
-            setInterval(nukeUnwantedElements, 500);
+            
+            // Interval check
+            setInterval(nukeUnwantedElements, 1000);
+            
             window.addEventListener('DOMContentLoaded', nukeUnwantedElements);
             window.addEventListener('load', nukeUnwantedElements);
         })();
@@ -103,8 +115,8 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
 
-    <!-- Navbar -->
-    <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md shadow-sm border-b border-transparent dark:border-gray-800 transition-all duration-300" id="navbar">
+    <!-- Navbar (Z-Index increased to 100 to ensure clickability) -->
+    <nav class="fixed w-full z-[100] bg-white/90 dark:bg-gray-900/95 backdrop-blur-md shadow-sm border-b border-transparent dark:border-gray-800 transition-all duration-300" id="navbar">
         <div class="container mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
             <div class="flex items-center gap-5">
                 <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-20 w-auto object-contain">
@@ -119,12 +131,12 @@
                 <a href="#location" class="hidden md:block font-medium text-lg hover:text-polbangtan dark:hover:text-green-400 transition">Lokasi</a>
                 
                 <!-- Settings Button -->
-                <button onclick="toggleSettings()" class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition flex items-center justify-center shadow-sm">
+                <button onclick="toggleSettings()" class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition flex items-center justify-center shadow-sm cursor-pointer z-[101]">
                     <i class="fa-solid fa-gear text-xl"></i>
                 </button>
 
-                <!-- Cart Button -->
-                <button onclick="toggleCart()" class="relative bg-polbangtan hover:bg-polbangtan-dark text-white p-4 rounded-full transition shadow-lg group">
+                <!-- Cart Button (Explicit cursor-pointer & high z-index) -->
+                <button onclick="toggleCart()" class="relative bg-polbangtan hover:bg-polbangtan-dark text-white p-4 rounded-full transition shadow-lg group cursor-pointer z-[101]">
                     <i class="fa-solid fa-shopping-cart mx-1 text-lg"></i>
                     <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full transform scale-0 transition-transform duration-200">0</span>
                 </button>
@@ -248,8 +260,8 @@
         </div>
     </footer>
 
-    <!-- SETTINGS MODAL (New Feature) -->
-    <div id="settings-modal" class="fixed inset-0 z-[65] hidden">
+    <!-- SETTINGS MODAL (Z-Index 110) -->
+    <div id="settings-modal" class="fixed inset-0 z-[110] hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleSettings()"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-sm bg-white dark:bg-gray-900 shadow-2xl transform transition-transform translate-x-full duration-300 flex flex-col border-l dark:border-gray-800" id="settings-panel">
             
@@ -296,8 +308,8 @@
         </div>
     </div>
 
-    <!-- Shopping Cart Modal -->
-    <div id="cart-modal" class="fixed inset-0 z-[60] hidden">
+    <!-- Shopping Cart Modal (Z-Index 110) -->
+    <div id="cart-modal" class="fixed inset-0 z-[110] hidden">
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl transform transition-transform translate-x-full duration-300 flex flex-col border-l dark:border-gray-800" id="cart-panel">
             
@@ -305,7 +317,7 @@
                 <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                     <i class="fa-solid fa-shopping-basket text-polbangtan"></i> Keranjang Anda
                 </h2>
-                <button onclick="toggleCart()" class="text-gray-400 hover:text-red-500 transition">
+                <button onclick="toggleCart()" class="text-gray-400 hover:text-red-500 transition cursor-pointer">
                     <i class="fa-solid fa-times text-2xl"></i>
                 </button>
             </div>
@@ -339,8 +351,8 @@
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmation-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
+    <!-- Confirmation Modal (Z-Index 120) -->
+    <div id="confirmation-modal" class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeConfirmation()"></div>
         <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh] border dark:border-gray-800">
             <div class="p-6 border-b dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
@@ -399,17 +411,19 @@
         let currentFontSize = 16; // Default pixels
 
         function toggleSettings() {
-            const modal = document.getElementById('settings-modal');
-            const panel = document.getElementById('settings-panel');
-            
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
-                updateSettingsUI();
-            } else {
-                panel.classList.add('translate-x-full');
-                setTimeout(() => modal.classList.add('hidden'), 300);
-            }
+            try {
+                const modal = document.getElementById('settings-modal');
+                const panel = document.getElementById('settings-panel');
+                
+                if (modal.classList.contains('hidden')) {
+                    modal.classList.remove('hidden');
+                    setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                    updateSettingsUI();
+                } else {
+                    panel.classList.add('translate-x-full');
+                    setTimeout(() => modal.classList.add('hidden'), 300);
+                }
+            } catch (e) { console.error(e); }
         }
 
         function setTheme(mode) {
@@ -425,34 +439,34 @@
         }
 
         function setFontSize(change) {
-            // Batasi ukuran huruf min 12px max 24px
             const newSize = currentFontSize + change;
             if (newSize >= 14 && newSize <= 22) {
                 currentFontSize = newSize;
-                // Ubah font-size root HTML dalam persen (Default browser 16px = 100%)
                 const percentage = (currentFontSize / 16) * 100;
                 document.documentElement.style.fontSize = `${percentage}%`;
                 
-                // Update Label
                 const label = document.getElementById('font-size-label');
-                if (currentFontSize === 16) label.innerText = "Normal";
-                else if (currentFontSize < 16) label.innerText = "Kecil";
-                else label.innerText = "Besar";
+                if (label) {
+                    if (currentFontSize === 16) label.innerText = "Normal";
+                    else if (currentFontSize < 16) label.innerText = "Kecil";
+                    else label.innerText = "Besar";
+                }
             }
         }
 
         function updateSettingsUI() {
-            // Highlight tombol aktif
             const isDark = document.documentElement.classList.contains('dark');
             const btnLight = document.getElementById('btn-theme-light');
             const btnDark = document.getElementById('btn-theme-dark');
 
-            if (isDark) {
-                btnDark.classList.add('border-polbangtan', 'bg-gray-800');
-                btnLight.classList.remove('border-polbangtan', 'bg-gray-800');
-            } else {
-                btnLight.classList.add('border-polbangtan', 'bg-green-50');
-                btnDark.classList.remove('border-polbangtan', 'bg-green-50');
+            if (btnLight && btnDark) {
+                if (isDark) {
+                    btnDark.classList.add('border-polbangtan', 'bg-gray-800');
+                    btnLight.classList.remove('border-polbangtan', 'bg-gray-800');
+                } else {
+                    btnLight.classList.add('border-polbangtan', 'bg-green-50');
+                    btnDark.classList.remove('border-polbangtan', 'bg-green-50');
+                }
             }
         }
 
@@ -480,7 +494,6 @@
         const productGrid = document.getElementById('product-grid');
         products.forEach(product => {
             const card = document.createElement('div');
-            // Menambahkan kelas dark mode untuk card
             card.className = "bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden product-card hover:shadow-2xl transition duration-300 border border-gray-100 dark:border-gray-700 flex flex-col";
             card.innerHTML = `
                 <div class="h-64 overflow-hidden relative">
@@ -495,10 +508,9 @@
                     <div class="mt-auto flex justify-between items-center pt-2 border-t border-gray-50 dark:border-gray-700">
                         <div>
                             <span class="text-lg text-gray-400 dark:text-gray-500 block mb-1">Harga per ${product.unit}</span>
-                            <!-- HARGA DIPERBESAR (text-3xl) -->
                             <span class="text-3xl font-bold text-polbangtan dark:text-green-400">${formatRupiah(product.price)}</span>
                         </div>
-                        <button onclick="addToCart(${product.id})" class="bg-green-100 dark:bg-green-900/30 hover:bg-polbangtan dark:hover:bg-green-600 text-polbangtan dark:text-green-400 hover:text-white w-12 h-12 rounded-full flex items-center justify-center transition duration-300 shadow-sm active:scale-95 text-lg">
+                        <button onclick="addToCart(${product.id})" class="bg-green-100 dark:bg-green-900/30 hover:bg-polbangtan dark:hover:bg-green-600 text-polbangtan dark:text-green-400 hover:text-white w-12 h-12 rounded-full flex items-center justify-center transition duration-300 shadow-sm active:scale-95 text-lg cursor-pointer z-10">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
@@ -533,6 +545,27 @@
                 item.qty += change;
                 if (item.qty <= 0) removeFromCart(productId);
                 else updateCartUI();
+            }
+        }
+
+        // Definisi Toggle Cart yang Lebih Aman dan Robust
+        function toggleCart() {
+            try {
+                const modal = document.getElementById('cart-modal');
+                const panel = document.getElementById('cart-panel');
+                
+                if (modal.classList.contains('hidden')) {
+                    modal.classList.remove('hidden');
+                    // Pastikan update UI dipanggil agar tidak kosong
+                    updateCartUI();
+                    setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                } else {
+                    panel.classList.add('translate-x-full');
+                    setTimeout(() => modal.classList.add('hidden'), 300);
+                }
+            } catch (error) {
+                console.error("Gagal membuka keranjang:", error);
+                alert("Maaf, terjadi kesalahan saat membuka keranjang. Silakan refresh halaman.");
             }
         }
 
@@ -589,7 +622,7 @@
 
                 if (checkoutForm.classList.contains('hidden')) {
                     showCheckoutBtn.disabled = false;
-                    showCheckoutBtn.classList.remove('cursor-not-allowed'); // FIX: remove blocked cursor
+                    showCheckoutBtn.classList.remove('cursor-not-allowed'); 
                     showCheckoutBtn.classList.replace('bg-gray-300', 'bg-polbangtan');
                     showCheckoutBtn.classList.remove('dark:bg-gray-700');
                     showCheckoutBtn.classList.replace('text-gray-500', 'text-white');
