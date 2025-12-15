@@ -37,6 +37,18 @@
     </script>
 
     <style>
+        /* FORCE HIDE Browser Extension Elements */
+        #crxjs-app, 
+        .min-w-\[20rem\].min-h-\[30rem\] {
+            display: none !important;
+            visibility: hidden !important;
+            width: 0 !important;
+            height: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            z-index: -9999 !important;
+        }
+
         /* Custom Animations */
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -67,12 +79,13 @@
     <!-- Increased px and py for wider feel -->
     <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300" id="navbar">
         <div class="container mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <!-- Logo Image -->
-                <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-14 w-auto object-contain">
+            <div class="flex items-center gap-5">
+                <!-- Logo Image - Enlarged -->
+                <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-20 w-auto object-contain">
                 <div>
-                    <h1 class="font-bold text-xl leading-tight text-polbangtan-dark">RPA Polbangtan</h1>
-                    <p class="text-sm text-gray-500">Malang</p>
+                    <!-- Logo Text - Enlarged -->
+                    <h1 class="font-bold text-3xl leading-tight text-polbangtan-dark">RPA Polbangtan</h1>
+                    <p class="text-lg text-gray-500">Malang</p>
                 </div>
             </div>
             
