@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="scroll-smooth" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,9 +16,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Tailwind Config for Custom Colors/Fonts -->
+    <!-- Tailwind Config for Custom Colors/Fonts & Dark Mode -->
     <script>
         tailwind.config = {
+            darkMode: 'class', // Mengaktifkan dark mode berbasis class
             theme: {
                 extend: {
                     fontFamily: {
@@ -36,54 +37,34 @@
         }
     </script>
 
-    <!-- ANTI-EXTENSION SCRIPT: Force Remove #crxjs-app -->
+    <!-- ANTI-EXTENSION SCRIPT -->
     <script>
         (function() {
-            // Fungsi untuk menghancurkan elemen pengganggu
             const nukeUnwantedElements = () => {
-                // Target utama berdasarkan ID
                 const targetId = document.getElementById('crxjs-app');
-                if (targetId) {
-                    targetId.remove();
-                    // console.log('Elemen #crxjs-app berhasil dihapus paksa.');
-                }
-
-                // Target sekunder berdasarkan class spesifik yang Anda sebutkan
-                // Mencari div dengan class "min-w-[20rem] min-h-[30rem]"
+                if (targetId) targetId.remove();
                 const targetClass = document.querySelector('div[class*="min-w-[20rem]"][class*="min-h-[30rem]"]');
                 if (targetClass) {
-                    // Hapus parent-nya jika ada, atau hapus elemen itu sendiri
                     const parent = targetClass.closest('#crxjs-app');
                     if (parent) parent.remove();
                     else targetClass.remove();
                 }
             };
-
-            // 1. Jalankan Observer untuk memantau setiap perubahan di halaman (DOM)
-            // Jika ekstensi mencoba menyuntikkan elemen, kita hapus saat itu juga.
-            const observer = new MutationObserver((mutations) => {
-                nukeUnwantedElements();
-            });
-
-            // Mulai memantau seluruh dokumen
-            observer.observe(document.documentElement, {
-                childList: true,
-                subtree: true
-            });
-
-            // 2. Interval Check (Pembersihan Berkala)
-            // Cek setiap 500ms untuk memastikan elemen benar-benar hilang
+            const observer = new MutationObserver((mutations) => { nukeUnwantedElements(); });
+            observer.observe(document.documentElement, { childList: true, subtree: true });
             setInterval(nukeUnwantedElements, 500);
-
-            // 3. Cek saat halaman selesai loading
             window.addEventListener('DOMContentLoaded', nukeUnwantedElements);
             window.addEventListener('load', nukeUnwantedElements);
         })();
     </script>
 
     <style>
-        /* CSS FORCE HIDE (Lapis Kedua Pertahanan) */
-        /* Menyembunyikan elemen jika Script gagal menghapusnya (sangat jarang terjadi) */
+        /* Smooth transition for font resizing */
+        html {
+            transition: font-size 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* CSS FORCE HIDE */
         #crxjs-app, 
         div[class*="min-w-[20rem]"][class*="min-h-[30rem]"] {
             display: none !important;
@@ -93,12 +74,11 @@
             height: 0 !important;
             pointer-events: none !important;
             position: fixed !important;
-            z-index: -2147483648 !important; /* Nilai Z-Index terendah */
+            z-index: -2147483648 !important;
             clip-path: inset(100%) !important;
             transform: scale(0) !important;
         }
 
-        /* Custom Animations */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
@@ -108,7 +88,6 @@
             animation: float 3s ease-in-out infinite;
         }
         
-        /* Hide scrollbar for clean modal look */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -122,26 +101,28 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans antialiased transition-colors duration-300">
 
     <!-- Navbar -->
-    <!-- Increased px and py for wider feel -->
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300" id="navbar">
+    <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md shadow-sm border-b border-transparent dark:border-gray-800 transition-all duration-300" id="navbar">
         <div class="container mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
             <div class="flex items-center gap-5">
-                <!-- Logo Image - Enlarged -->
                 <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-20 w-auto object-contain">
                 <div>
-                    <!-- Logo Text - Enlarged -->
-                    <h1 class="font-bold text-3xl leading-tight text-polbangtan-dark">RPA Polbangtan</h1>
-                    <p class="text-lg text-gray-500">Malang</p>
+                    <h1 class="font-bold text-3xl leading-tight text-polbangtan-dark dark:text-green-400">RPA Polbangtan</h1>
+                    <p class="text-lg text-gray-500 dark:text-gray-400">Malang</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-8">
-                <a href="#products" class="hidden md:block font-medium text-lg hover:text-polbangtan transition">Produk</a>
-                <a href="#location" class="hidden md:block font-medium text-lg hover:text-polbangtan transition">Lokasi</a>
+            <div class="flex items-center gap-6">
+                <a href="#products" class="hidden md:block font-medium text-lg hover:text-polbangtan dark:hover:text-green-400 transition">Produk</a>
+                <a href="#location" class="hidden md:block font-medium text-lg hover:text-polbangtan dark:hover:text-green-400 transition">Lokasi</a>
                 
+                <!-- Settings Button -->
+                <button onclick="toggleSettings()" class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition flex items-center justify-center shadow-sm">
+                    <i class="fa-solid fa-gear text-xl"></i>
+                </button>
+
                 <!-- Cart Button -->
                 <button onclick="toggleCart()" class="relative bg-polbangtan hover:bg-polbangtan-dark text-white p-4 rounded-full transition shadow-lg group">
                     <i class="fa-solid fa-shopping-cart mx-1 text-lg"></i>
@@ -152,49 +133,46 @@
     </nav>
 
     <!-- Hero Section -->
-    <!-- Increased padding top/bottom (pt-48 pb-40) and horizontal gap -->
-    <section class="relative pt-48 pb-40 overflow-hidden bg-gradient-to-br from-green-50 to-green-100">
+    <section class="relative pt-48 pb-40 overflow-hidden bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
         <!-- Decoration Circles -->
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-polbangtan/10 blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-yellow-300/20 blur-3xl"></div>
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-polbangtan/10 dark:bg-green-500/10 blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-yellow-300/20 dark:bg-yellow-500/10 blur-3xl"></div>
 
         <div class="container mx-auto px-8 md:px-16 flex flex-col md:flex-row items-center gap-24">
             <div class="md:w-1/2 z-10 space-y-10 text-center md:text-left">
-                <div class="inline-block px-5 py-2 bg-green-200 text-polbangtan-dark rounded-full text-sm font-semibold mb-2 shadow-sm">
+                <div class="inline-block px-5 py-2 bg-green-200 dark:bg-green-900 text-polbangtan-dark dark:text-green-100 rounded-full text-sm font-semibold mb-2 shadow-sm">
                     Fresh & Higienis
                 </div>
-                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight">
                     Ayam Segar Langsung dari <span class="text-transparent bg-clip-text bg-gradient-to-r from-polbangtan to-teal-500">Peternakan</span>
                 </h1>
-                <p class="text-gray-600 text-xl leading-relaxed">
+                <p class="text-gray-600 dark:text-gray-300 text-xl leading-relaxed">
                     Kualitas terbaik dari Divisi Ayam Buras Polbangtan Malang. Halal, bersih, dan harga terjangkau untuk kebutuhan keluarga Anda.
                 </p>
                 <div class="flex gap-6 justify-center md:justify-start pt-6">
                     <a href="#products" class="bg-polbangtan hover:bg-polbangtan-dark text-white px-12 py-5 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
                         Pesan Sekarang
                     </a>
-                    <a href="https://wa.me/6285179852558" target="_blank" class="border-2 border-polbangtan text-polbangtan hover:bg-polbangtan hover:text-white px-12 py-5 rounded-full font-bold text-lg transition">
+                    <a href="https://wa.me/6285179852558" target="_blank" class="border-2 border-polbangtan text-polbangtan dark:text-green-400 dark:border-green-400 hover:bg-polbangtan hover:text-white dark:hover:bg-green-600 px-12 py-5 rounded-full font-bold text-lg transition">
                         Hubungi Kami
                     </a>
                 </div>
             </div>
             <div class="md:w-1/2 z-10 flex justify-center">
-                <!-- Abstract Hero Image -->
                 <img src="https://i.ibb.co.com/kgnWRxZX/Gemini-Generated-Image-azy0udazy0udazy0.png" 
                      alt="Ayam Segar" 
-                     class="rounded-[2.5rem] shadow-2xl animate-float w-full max-w-lg object-cover h-[500px]">
+                     class="rounded-[2.5rem] shadow-2xl animate-float w-full max-w-lg object-cover h-[500px] border-4 border-white/50 dark:border-gray-700/50">
             </div>
         </div>
     </section>
 
     <!-- Product Section -->
-    <!-- Increased py to 32 and container px -->
-    <section id="products" class="py-32 bg-white">
+    <section id="products" class="py-32 bg-white dark:bg-gray-900 transition-colors duration-300">
         <div class="container mx-auto px-8 md:px-16">
             <div class="text-center mb-20">
-                <h2 class="text-4xl font-bold text-gray-900 mb-6">Pilihan Produk Kami</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Pilihan Produk Kami</h2>
                 <div class="w-28 h-2 bg-polbangtan mx-auto rounded-full"></div>
-                <p class="mt-6 text-gray-600 text-lg">Diproses dengan standar kebersihan tinggi untuk keluarga Anda</p>
+                <p class="mt-6 text-gray-600 dark:text-gray-400 text-lg">Diproses dengan standar kebersihan tinggi untuk keluarga Anda</p>
             </div>
 
             <!-- Product Grid -->
@@ -205,44 +183,42 @@
     </section>
 
     <!-- Location Section -->
-    <!-- Increased py to 32 and container px -->
-    <section id="location" class="py-32 bg-gray-50">
+    <section id="location" class="py-32 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
         <div class="container mx-auto px-8 md:px-16">
-            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row">
+            <div class="bg-white dark:bg-gray-900 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row border border-transparent dark:border-gray-700">
                 <div class="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center">
-                    <h2 class="text-4xl font-bold text-gray-900 mb-10">Lokasi Kami</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-10">Lokasi Kami</h2>
                     <div class="space-y-8">
                         <div class="flex items-start gap-6">
-                            <div class="bg-green-100 p-5 rounded-full text-polbangtan shrink-0">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-5 rounded-full text-polbangtan dark:text-green-400 shrink-0">
                                 <i class="fa-solid fa-location-dot text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-xl mb-2">Divisi Ayam Buras Polbangtan</h3>
-                                <p class="text-gray-600 leading-relaxed text-lg">Gondang, Randuangung, Kec. Singosari, Kabupaten Malang, Jawa Timur 65153</p>
+                                <h3 class="font-bold text-xl mb-2 dark:text-gray-100">Divisi Ayam Buras Polbangtan</h3>
+                                <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">Gondang, Randuangung, Kec. Singosari, Kabupaten Malang, Jawa Timur 65153</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-6">
-                            <div class="bg-green-100 p-5 rounded-full text-polbangtan shrink-0">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-5 rounded-full text-polbangtan dark:text-green-400 shrink-0">
                                 <i class="fa-brands fa-whatsapp text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-xl mb-2">Hubungi Kak Abdi</h3>
-                                <p class="text-gray-600 text-lg">0851-7985-2558</p>
+                                <h3 class="font-bold text-xl mb-2 dark:text-gray-100">Hubungi Kak Abdi</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-lg">0851-7985-2558</p>
                             </div>
                         </div>
                         <div class="flex items-start gap-6">
-                            <div class="bg-green-100 p-5 rounded-full text-polbangtan shrink-0">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-5 rounded-full text-polbangtan dark:text-green-400 shrink-0">
                                 <i class="fa-solid fa-clock text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-xl mb-2">Jam Operasional</h3>
-                                <p class="text-gray-600 text-lg">Senin - Sabtu: 08:00 - 16:00 WIB</p>
+                                <h3 class="font-bold text-xl mb-2 dark:text-gray-100">Jam Operasional</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-lg">Senin - Sabtu: 08:00 - 16:00 WIB</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="lg:w-1/2 h-[500px] lg:h-auto bg-gray-200 relative">
-                    <!-- Google Maps Embed -->
+                <div class="lg:w-1/2 h-[500px] lg:h-auto bg-gray-200 dark:bg-gray-700 relative">
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.984093951234!2d112.6395!3d-7.906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd62a00407137ad%3A0x6b00000000000000!2sPolbangtan%20Malang!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
                         width="100%" 
@@ -251,7 +227,7 @@
                         allowfullscreen="" 
                         loading="lazy" 
                         referrerpolicy="no-referrer-when-downgrade"
-                        class="absolute inset-0 w-full h-full">
+                        class="absolute inset-0 w-full h-full grayscale-[0.2] dark:invert dark:grayscale">
                     </iframe>
                 </div>
             </div>
@@ -259,31 +235,74 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-polbangtan-dark text-white py-16">
+    <footer class="bg-polbangtan-dark dark:bg-gray-950 text-white py-16 transition-colors duration-300">
         <div class="container mx-auto px-8 md:px-16 text-center">
             <div class="mb-8 flex justify-center">
-                <!-- Footer Logo -->
                 <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-24 w-auto brightness-0 invert opacity-90">
             </div>
             <h3 class="text-3xl font-bold mb-4">RPA Polbangtan Malang</h3>
-            <p class="text-green-200 mb-10 max-w-xl mx-auto text-lg">Menyediakan daging ayam berkualitas, halal, dan higienis langsung dari peternakan pendidikan.</p>
-            <div class="border-t border-green-800 pt-10 text-base text-green-300">
+            <p class="text-green-200 dark:text-gray-400 mb-10 max-w-xl mx-auto text-lg">Menyediakan daging ayam berkualitas, halal, dan higienis langsung dari peternakan pendidikan.</p>
+            <div class="border-t border-green-800 dark:border-gray-800 pt-10 text-base text-green-300 dark:text-gray-500">
                 &copy; 2024 RPA Polbangtan Malang. All rights reserved.
             </div>
         </div>
     </footer>
 
-    <!-- Shopping Cart Modal (Hidden by default) -->
-    <div id="cart-modal" class="fixed inset-0 z-[60] hidden">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
-        
-        <!-- Cart Panel -->
-        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transform transition-transform translate-x-full duration-300 flex flex-col" id="cart-panel">
+    <!-- SETTINGS MODAL (New Feature) -->
+    <div id="settings-modal" class="fixed inset-0 z-[65] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleSettings()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-sm bg-white dark:bg-gray-900 shadow-2xl transform transition-transform translate-x-full duration-300 flex flex-col border-l dark:border-gray-800" id="settings-panel">
             
-            <!-- Header -->
-            <div class="p-6 border-b flex justify-between items-center bg-gray-50">
-                <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+            <div class="p-6 border-b dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-gear text-polbangtan"></i> Pengaturan
+                </h2>
+                <button onclick="toggleSettings()" class="text-gray-400 hover:text-red-500 transition">
+                    <i class="fa-solid fa-times text-2xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-8">
+                <!-- Tema -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Tema Tampilan</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="setTheme('light')" class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition" id="btn-theme-light">
+                            <i class="fa-solid fa-sun text-2xl text-yellow-500"></i>
+                            <span class="font-medium dark:text-gray-300">Terang</span>
+                        </button>
+                        <button onclick="setTheme('dark')" class="flex flex-col items-center gap-2 p-4 rounded-xl border-2 border-transparent hover:bg-gray-100 dark:hover:bg-gray-800 transition" id="btn-theme-dark">
+                            <i class="fa-solid fa-moon text-2xl text-blue-500"></i>
+                            <span class="font-medium dark:text-gray-300">Gelap</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Ukuran Huruf -->
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Ukuran Huruf</h3>
+                    <div class="flex items-center justify-between bg-gray-100 dark:bg-gray-800 p-2 rounded-xl">
+                        <button onclick="setFontSize(-2)" class="w-10 h-10 rounded-lg bg-white dark:bg-gray-700 shadow-sm flex items-center justify-center hover:text-polbangtan">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <span class="font-bold text-gray-700 dark:text-white" id="font-size-label">Normal</span>
+                        <button onclick="setFontSize(2)" class="w-10 h-10 rounded-lg bg-white dark:bg-gray-700 shadow-sm flex items-center justify-center hover:text-polbangtan">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">Sesuaikan kenyamanan baca Anda</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-[60] hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onclick="toggleCart()"></div>
+        <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-900 shadow-2xl transform transition-transform translate-x-full duration-300 flex flex-col border-l dark:border-gray-800" id="cart-panel">
+            
+            <div class="p-6 border-b dark:border-gray-800 flex justify-between items-center bg-gray-50 dark:bg-gray-800">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                     <i class="fa-solid fa-shopping-basket text-polbangtan"></i> Keranjang Anda
                 </h2>
                 <button onclick="toggleCart()" class="text-gray-400 hover:text-red-500 transition">
@@ -291,82 +310,74 @@
                 </button>
             </div>
 
-            <!-- Cart Items Area -->
             <div class="flex-1 overflow-y-auto p-6 no-scrollbar" id="cart-items-container">
-                <!-- Items will be injected here -->
                 <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                    <i class="fa-solid fa-cart-arrow-down text-7xl mb-4 text-gray-200"></i>
+                    <i class="fa-solid fa-cart-arrow-down text-7xl mb-4 text-gray-200 dark:text-gray-700"></i>
                     <p class="text-lg">Keranjang masih kosong</p>
                 </div>
             </div>
 
-            <!-- Footer / Checkout Form -->
-            <div class="p-6 border-t bg-gray-50">
-                <div class="flex justify-between items-center mb-6 text-xl font-bold">
+            <div class="p-6 border-t dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
+                <div class="flex justify-between items-center mb-6 text-xl font-bold dark:text-white">
                     <span>Total:</span>
                     <span class="text-polbangtan" id="cart-total">Rp 0</span>
                 </div>
 
                 <div id="checkout-form" class="space-y-4 hidden">
-                    <input type="text" id="customer-name" placeholder="Nama Anda" class="w-full px-5 py-3 border rounded-xl focus:ring-2 focus:ring-polbangtan focus:outline-none">
-                    <textarea id="customer-address" rows="2" placeholder="Alamat Lengkap" class="w-full px-5 py-3 border rounded-xl focus:ring-2 focus:ring-polbangtan focus:outline-none"></textarea>
+                    <input type="text" id="customer-name" placeholder="Nama Anda" class="w-full px-5 py-3 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-polbangtan focus:outline-none placeholder-gray-400">
+                    <textarea id="customer-address" rows="2" placeholder="Alamat Lengkap" class="w-full px-5 py-3 border dark:border-gray-700 dark:bg-gray-700 dark:text-white rounded-xl focus:ring-2 focus:ring-polbangtan focus:outline-none placeholder-gray-400"></textarea>
                     
                     <button onclick="processCheckout()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition flex justify-center items-center gap-2 text-lg">
                         <i class="fa-brands fa-whatsapp text-2xl"></i> Pesan via WhatsApp
                     </button>
                 </div>
                 
-                <button id="show-checkout-btn" onclick="showCheckout()" class="w-full bg-gray-300 text-gray-500 font-bold py-4 rounded-xl cursor-not-allowed text-lg" disabled>
+                <button id="show-checkout-btn" onclick="showCheckout()" class="w-full bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 font-bold py-4 rounded-xl cursor-not-allowed text-lg" disabled>
                     Isi Keranjang Dulu
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Confirmation Modal (New Feature) -->
+    <!-- Confirmation Modal -->
     <div id="confirmation-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
-        <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeConfirmation()"></div>
-        
-        <!-- Modal Content -->
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh]">
-            <div class="p-6 border-b bg-gray-50">
-                <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+        <div class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh] border dark:border-gray-800">
+            <div class="p-6 border-b dark:border-gray-800 bg-gray-50 dark:bg-gray-800">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
                     <i class="fa-solid fa-circle-question text-polbangtan"></i> Konfirmasi Pesanan
                 </h3>
             </div>
             
             <div class="p-8 space-y-5 overflow-y-auto">
-                <p class="text-gray-600">Apakah data pesanan Anda sudah benar?</p>
+                <p class="text-gray-600 dark:text-gray-300">Apakah data pesanan Anda sudah benar?</p>
                 
-                <!-- Customer Info -->
-                <div class="bg-green-50 p-5 rounded-xl text-sm space-y-3 border border-green-100">
+                <div class="bg-green-50 dark:bg-green-900/20 p-5 rounded-xl text-sm space-y-3 border border-green-100 dark:border-green-900">
                     <div class="flex justify-between items-start">
-                        <span class="text-gray-500 shrink-0">Nama:</span>
-                        <span class="font-bold text-gray-800 text-right ml-4 text-base" id="confirm-name">-</span>
+                        <span class="text-gray-500 dark:text-gray-400 shrink-0">Nama:</span>
+                        <span class="font-bold text-gray-800 dark:text-gray-100 text-right ml-4 text-base" id="confirm-name">-</span>
                     </div>
                     <div class="flex justify-between items-start">
-                        <span class="text-gray-500 shrink-0">Alamat:</span>
-                        <span class="font-bold text-gray-800 text-right ml-4 break-words w-2/3 text-base" id="confirm-address">-</span>
+                        <span class="text-gray-500 dark:text-gray-400 shrink-0">Alamat:</span>
+                        <span class="font-bold text-gray-800 dark:text-gray-100 text-right ml-4 break-words w-2/3 text-base" id="confirm-address">-</span>
                     </div>
                 </div>
 
-                <!-- Order Summary -->
-                <div class="border rounded-xl p-4">
+                <div class="border dark:border-gray-700 rounded-xl p-4">
                     <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-wider">Ringkasan Item</h4>
                     <div class="space-y-3 max-h-48 overflow-y-auto pr-2 no-scrollbar" id="confirm-items">
                         <!-- Items injected via JS -->
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center text-lg font-bold pt-3 border-t">
-                    <span>Total Bayar:</span>
+                <div class="flex justify-between items-center text-lg font-bold pt-3 border-t dark:border-gray-700">
+                    <span class="dark:text-white">Total Bayar:</span>
                     <span class="text-polbangtan text-2xl" id="confirm-total">Rp 0</span>
                 </div>
             </div>
 
-            <div class="p-6 border-t bg-gray-50 flex gap-4">
-                <button onclick="closeConfirmation()" class="flex-1 px-5 py-4 border border-gray-300 rounded-xl text-gray-700 font-bold hover:bg-gray-100 transition">
+            <div class="p-6 border-t dark:border-gray-800 bg-gray-50 dark:bg-gray-800 flex gap-4">
+                <button onclick="closeConfirmation()" class="flex-1 px-5 py-4 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                     Batal
                 </button>
                 <button onclick="confirmOrder()" class="flex-1 px-5 py-4 bg-polbangtan hover:bg-polbangtan-dark text-white rounded-xl font-bold shadow-lg transition flex justify-center items-center gap-2 hover:-translate-y-0.5 transform">
@@ -377,81 +388,117 @@
     </div>
 
     <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-8 py-4 rounded-full shadow-2xl transition-all duration-300 translate-y-32 opacity-0 z-[70] flex items-center gap-4 border border-gray-700">
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 dark:bg-gray-700 text-white px-8 py-4 rounded-full shadow-2xl transition-all duration-300 translate-y-32 opacity-0 z-[70] flex items-center gap-4 border border-gray-700 dark:border-gray-600">
         <i class="fa-solid fa-check-circle text-green-400 text-xl"></i>
         <span id="toast-message" class="font-medium">Item ditambahkan</span>
     </div>
 
     <script>
-        // Data Produk
-        const products = [
-            {
-                id: 1,
-                name: "Karkas (Sudah Cabut Bulu)",
-                price: 40000,
-                unit: "ekor",
-                desc: "Ayam utuh bersih, siap masak tanpa repot.",
-                image: "https://i.ibb.co.com/Z16xBKjs/unnamed-3.jpg"
-            },
-            {
-                id: 2,
-                name: "Karkas (Belum Cabut Bulu)",
-                price: 30000,
-                unit: "ekor",
-                desc: "Ayam utuh segar, harga lebih hemat.",
-                image: "https://i.ibb.co.com/6cFmxV0z/unnamed-2.jpg" 
-            },
-            {
-                id: 3,
-                name: "Potongan Dada Ayam",
-                price: 32000,
-                unit: "kg",
-                desc: "Daging tebal, rendah lemak, kaya protein.",
-                image: "https://images.contentful.com/1cj2ge3ast5f/7KYFJWb9NuTxE7dFKMymA/e58263de470bdfb461a3f13ec154bfa4/Dada_Mentok.jpeg"
-            },
-            {
-                id: 4,
-                name: "Sayap Ayam",
-                price: 20000,
-                unit: "kg",
-                desc: "Cocok untuk digoreng krispi atau dibakar.",
-                image: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/101/MTA-106407828/lynn_kitchen_sayap_ayam_full01_bnhz4zyo.jpg"
-            },
-            {
-                id: 5,
-                name: "Paha Ayam",
-                price: 18000,
-                unit: "kg",
-                desc: "Daging juicy dan lembut, favorit keluarga.",
-                image: "https://asset.kompas.com/crops/ett8U_DlHvG4V5gQoVBmH-qHvck=/100x67:900x600/1200x800/data/photo/2023/04/27/644a17e2343fa.jpg"
+        // --- LOGIC SETTINGS & TEMA ---
+        
+        let currentFontSize = 16; // Default pixels
+
+        function toggleSettings() {
+            const modal = document.getElementById('settings-modal');
+            const panel = document.getElementById('settings-panel');
+            
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                setTimeout(() => panel.classList.remove('translate-x-full'), 10);
+                updateSettingsUI();
+            } else {
+                panel.classList.add('translate-x-full');
+                setTimeout(() => modal.classList.add('hidden'), 300);
             }
+        }
+
+        function setTheme(mode) {
+            const html = document.documentElement;
+            if (mode === 'dark') {
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+            } else {
+                html.classList.remove('dark');
+                localStorage.theme = 'light';
+            }
+            updateSettingsUI();
+        }
+
+        function setFontSize(change) {
+            // Batasi ukuran huruf min 12px max 24px
+            const newSize = currentFontSize + change;
+            if (newSize >= 14 && newSize <= 22) {
+                currentFontSize = newSize;
+                // Ubah font-size root HTML dalam persen (Default browser 16px = 100%)
+                const percentage = (currentFontSize / 16) * 100;
+                document.documentElement.style.fontSize = `${percentage}%`;
+                
+                // Update Label
+                const label = document.getElementById('font-size-label');
+                if (currentFontSize === 16) label.innerText = "Normal";
+                else if (currentFontSize < 16) label.innerText = "Kecil";
+                else label.innerText = "Besar";
+            }
+        }
+
+        function updateSettingsUI() {
+            // Highlight tombol aktif
+            const isDark = document.documentElement.classList.contains('dark');
+            const btnLight = document.getElementById('btn-theme-light');
+            const btnDark = document.getElementById('btn-theme-dark');
+
+            if (isDark) {
+                btnDark.classList.add('border-polbangtan', 'bg-gray-800');
+                btnLight.classList.remove('border-polbangtan', 'bg-gray-800');
+            } else {
+                btnLight.classList.add('border-polbangtan', 'bg-green-50');
+                btnDark.classList.remove('border-polbangtan', 'bg-green-50');
+            }
+        }
+
+        // Cek Preferensi Awal
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+
+        // --- LOGIC TOKO ---
+
+        const products = [
+            { id: 1, name: "Karkas (Sudah Cabut Bulu)", price: 40000, unit: "ekor", desc: "Ayam utuh bersih, siap masak tanpa repot.", image: "https://i.ibb.co.com/Z16xBKjs/unnamed-3.jpg" },
+            { id: 2, name: "Karkas (Belum Cabut Bulu)", price: 30000, unit: "ekor", desc: "Ayam utuh segar, harga lebih hemat.", image: "https://i.ibb.co.com/6cFmxV0z/unnamed-2.jpg" },
+            { id: 3, name: "Potongan Dada Ayam", price: 32000, unit: "kg", desc: "Daging tebal, rendah lemak, kaya protein.", image: "https://images.contentful.com/1cj2ge3ast5f/7KYFJWb9NuTxE7dFKMymA/e58263de470bdfb461a3f13ec154bfa4/Dada_Mentok.jpeg" },
+            { id: 4, name: "Sayap Ayam", price: 20000, unit: "kg", desc: "Cocok untuk digoreng krispi atau dibakar.", image: "https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//catalog-image/101/MTA-106407828/lynn_kitchen_sayap_ayam_full01_bnhz4zyo.jpg" },
+            { id: 5, name: "Paha Ayam", price: 18000, unit: "kg", desc: "Daging juicy dan lembut, favorit keluarga.", image: "https://asset.kompas.com/crops/ett8U_DlHvG4V5gQoVBmH-qHvck=/100x67:900x600/1200x800/data/photo/2023/04/27/644a17e2343fa.jpg" }
         ];
 
-        // State Keranjang
         let cart = [];
-        let pendingOrder = {}; // Variabel untuk menyimpan pesanan sementara
+        let pendingOrder = {};
 
-        // Render Produk ke Grid
         const productGrid = document.getElementById('product-grid');
         products.forEach(product => {
             const card = document.createElement('div');
-            card.className = "bg-white rounded-3xl shadow-lg overflow-hidden product-card hover:shadow-2xl transition duration-300 border border-gray-100 flex flex-col";
+            // Menambahkan kelas dark mode untuk card
+            card.className = "bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden product-card hover:shadow-2xl transition duration-300 border border-gray-100 dark:border-gray-700 flex flex-col";
             card.innerHTML = `
                 <div class="h-64 overflow-hidden relative">
                     <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition duration-500 product-img" onerror="this.src='https://placehold.co/600x400?text=Ayam+Segar'">
-                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-polbangtan shadow-md">
+                    <div class="absolute top-4 right-4 bg-white/95 dark:bg-gray-800/95 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-polbangtan dark:text-green-400 shadow-md">
                         Stok Ready
                     </div>
                 </div>
                 <div class="p-8 flex flex-col flex-grow">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-3 leading-tight">${product.name}</h3>
-                    <p class="text-gray-500 mb-6 line-clamp-2 leading-relaxed">${product.desc}</p>
-                    <div class="mt-auto flex justify-between items-center pt-4 border-t border-gray-50">
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-3 leading-tight">${product.name}</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 leading-relaxed">${product.desc}</p>
+                    <div class="mt-auto flex justify-between items-center pt-4 border-t border-gray-50 dark:border-gray-700">
                         <div>
-                            <span class="text-xs text-gray-400 block mb-1">Harga per ${product.unit}</span>
-                            <span class="text-xl font-bold text-polbangtan">${formatRupiah(product.price)}</span>
+                            <span class="text-xs text-gray-400 dark:text-gray-500 block mb-1">Harga per ${product.unit}</span>
+                            <!-- HARGA DIPERBESAR (text-3xl) -->
+                            <span class="text-3xl font-bold text-polbangtan dark:text-green-400">${formatRupiah(product.price)}</span>
                         </div>
-                        <button onclick="addToCart(${product.id})" class="bg-green-100 hover:bg-polbangtan text-polbangtan hover:text-white w-12 h-12 rounded-full flex items-center justify-center transition duration-300 shadow-sm active:scale-95 text-lg">
+                        <button onclick="addToCart(${product.id})" class="bg-green-100 dark:bg-green-900/30 hover:bg-polbangtan dark:hover:bg-green-600 text-polbangtan dark:text-green-400 hover:text-white w-12 h-12 rounded-full flex items-center justify-center transition duration-300 shadow-sm active:scale-95 text-lg">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
@@ -460,34 +507,26 @@
             productGrid.appendChild(card);
         });
 
-        // Fungsi Format Rupiah
         function formatRupiah(number) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
         }
 
-        // Tambah ke Keranjang
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             const existingItem = cart.find(item => item.id === productId);
-
-            if (existingItem) {
-                existingItem.qty++;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-
+            if (existingItem) existingItem.qty++;
+            else cart.push({ ...product, qty: 1 });
+            
             updateCartUI();
             showToast(`"${product.name}" masuk keranjang`);
             animateCartIcon();
         }
 
-        // Hapus dari Keranjang
         function removeFromCart(productId) {
             cart = cart.filter(item => item.id !== productId);
             updateCartUI();
         }
 
-        // Update Qty
         function updateQty(productId, change) {
             const item = cart.find(item => item.id === productId);
             if (item) {
@@ -497,7 +536,6 @@
             }
         }
 
-        // Update UI Keranjang & Badge
         function updateCartUI() {
             const badge = document.getElementById('cart-badge');
             const itemsContainer = document.getElementById('cart-items-container');
@@ -505,29 +543,24 @@
             const showCheckoutBtn = document.getElementById('show-checkout-btn');
             const checkoutForm = document.getElementById('checkout-form');
 
-            // Hitung total item & harga
             const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            // Update Badge
             badge.innerText = totalQty;
-            if (totalQty > 0) {
-                badge.classList.remove('scale-0');
-            } else {
-                badge.classList.add('scale-0');
-            }
+            if (totalQty > 0) badge.classList.remove('scale-0');
+            else badge.classList.add('scale-0');
 
-            // Render Items
             itemsContainer.innerHTML = '';
             if (cart.length === 0) {
                 itemsContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                        <i class="fa-solid fa-shopping-basket text-7xl mb-4 text-gray-200"></i>
+                        <i class="fa-solid fa-cart-arrow-down text-7xl mb-4 text-gray-200 dark:text-gray-700"></i>
                         <p class="text-lg">Keranjang masih kosong</p>
                     </div>
                 `;
                 showCheckoutBtn.disabled = true;
                 showCheckoutBtn.classList.replace('bg-polbangtan', 'bg-gray-300');
+                showCheckoutBtn.classList.add('dark:bg-gray-700');
                 showCheckoutBtn.classList.replace('text-white', 'text-gray-500');
                 showCheckoutBtn.innerText = "Isi Keranjang Dulu";
                 showCheckoutBtn.classList.remove('hidden');
@@ -535,16 +568,16 @@
             } else {
                 cart.forEach(item => {
                     const itemEl = document.createElement('div');
-                    itemEl.className = "flex gap-4 mb-5 bg-white p-4 rounded-xl shadow-sm border border-gray-100";
+                    itemEl.className = "flex gap-4 mb-5 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700";
                     itemEl.innerHTML = `
                         <img src="${item.image}" class="w-20 h-20 rounded-lg object-cover">
                         <div class="flex-1">
-                            <h4 class="font-bold text-gray-800 text-base mb-1">${item.name}</h4>
-                            <p class="text-polbangtan text-sm font-semibold">${formatRupiah(item.price)}</p>
+                            <h4 class="font-bold text-gray-800 dark:text-gray-100 text-base mb-1">${item.name}</h4>
+                            <p class="text-polbangtan dark:text-green-400 text-sm font-semibold">${formatRupiah(item.price)}</p>
                             <div class="flex items-center gap-3 mt-3">
-                                <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-sm hover:bg-gray-300 transition">-</button>
-                                <span class="text-base font-medium w-6 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 rounded-full bg-polbangtan text-white flex items-center justify-center text-sm hover:bg-green-700 transition">+</button>
+                                <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 flex items-center justify-center text-sm hover:bg-gray-300 transition">-</button>
+                                <span class="text-base font-medium w-6 text-center dark:text-white">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 rounded-full bg-polbangtan dark:bg-green-600 text-white flex items-center justify-center text-sm hover:bg-green-700 transition">+</button>
                             </div>
                         </div>
                         <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 self-start p-1 transition">
@@ -554,118 +587,68 @@
                     itemsContainer.appendChild(itemEl);
                 });
 
-                // Update Button State
                 if (checkoutForm.classList.contains('hidden')) {
                     showCheckoutBtn.disabled = false;
                     showCheckoutBtn.classList.replace('bg-gray-300', 'bg-polbangtan');
+                    showCheckoutBtn.classList.remove('dark:bg-gray-700');
                     showCheckoutBtn.classList.replace('text-gray-500', 'text-white');
                     showCheckoutBtn.classList.add('hover:bg-polbangtan-dark');
                     showCheckoutBtn.innerText = "Lanjut ke Pembayaran";
                 }
             }
-
             totalEl.innerText = formatRupiah(totalPrice);
         }
 
-        // Toggle Modal Keranjang
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            const panel = document.getElementById('cart-panel');
-            
-            if (modal.classList.contains('hidden')) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    panel.classList.remove('translate-x-full');
-                }, 10);
-            } else {
-                panel.classList.add('translate-x-full');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300);
-            }
-        }
-
-        // Tampilkan Form Checkout
         function showCheckout() {
             document.getElementById('show-checkout-btn').classList.add('hidden');
             document.getElementById('checkout-form').classList.remove('hidden');
-            // Auto focus ke nama
             setTimeout(() => document.getElementById('customer-name').focus(), 100);
         }
 
-        // 1. Trigger saat tombol Pesan diklik (Buka Modal)
         function processCheckout() {
             const name = document.getElementById('customer-name').value.trim();
             const address = document.getElementById('customer-address').value.trim();
-
-            if (!name || !address) {
-                alert("Mohon lengkapi Nama dan Alamat Anda untuk pengiriman.");
-                return;
-            }
-
-            // Simpan data ke variabel sementara
+            if (!name || !address) { alert("Mohon lengkapi Nama dan Alamat Anda."); return; }
+            
             pendingOrder = {
                 name: name,
                 address: address,
-                items: [...cart], // Copy array cart
+                items: [...cart],
                 total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
             };
 
-            // Isi data ke dalam Modal Konfirmasi
             document.getElementById('confirm-name').innerText = pendingOrder.name;
             document.getElementById('confirm-address').innerText = pendingOrder.address;
             document.getElementById('confirm-total').innerText = formatRupiah(pendingOrder.total);
             
             const itemsList = document.getElementById('confirm-items');
             itemsList.innerHTML = pendingOrder.items.map(item => `
-                <div class="flex justify-between text-base py-2 border-b border-gray-50 last:border-0">
-                    <span class="text-gray-700">${item.name} <span class="text-sm text-gray-400">x${item.qty}</span></span>
-                    <span class="font-medium text-gray-900">${formatRupiah(item.price * item.qty)}</span>
+                <div class="flex justify-between text-base py-2 border-b border-gray-50 dark:border-gray-700 last:border-0">
+                    <span class="text-gray-700 dark:text-gray-300">${item.name} <span class="text-sm text-gray-400">x${item.qty}</span></span>
+                    <span class="font-medium text-gray-900 dark:text-white">${formatRupiah(item.price * item.qty)}</span>
                 </div>
             `).join('');
-
-            // Tampilkan Modal
-            const modal = document.getElementById('confirmation-modal');
-            modal.classList.remove('hidden');
+            
+            document.getElementById('confirmation-modal').classList.remove('hidden');
         }
 
-        // 2. Tutup Modal Konfirmasi
         function closeConfirmation() {
             document.getElementById('confirmation-modal').classList.add('hidden');
         }
 
-        // 3. Eksekusi Pesanan ke WhatsApp (Setelah Konfirmasi)
         function confirmOrder() {
-            // Build Pesan WhatsApp
             let orderDetails = pendingOrder.items.map(item => `- ${item.name} (${item.qty} ${item.unit})`).join('\n');
-            
             let message = `Halo Kak Abdi! Saya *${pendingOrder.name}* ingin pesan:\n\n${orderDetails}\n\n*Total Estimasi: ${formatRupiah(pendingOrder.total)}*\n\nAlamat Pengiriman:\n${pendingOrder.address}\n\nTerima kasih.`;
-
-            // Kirim ke WA
-            const phone = "6285179852558";
-            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-            
-            window.open(url, '_blank');
-            
-            // Bersihkan state setelah memesan
+            window.open(`https://wa.me/6285179852558?text=${encodeURIComponent(message)}`, '_blank');
             closeConfirmation();
-            cart = []; // Kosongkan keranjang
-            updateCartUI(); // Update UI
-            toggleCart(); // Tutup sidebar keranjang
-            showToast("Pesanan berhasil dialihkan ke WhatsApp!");
+            cart = []; updateCartUI(); toggleCart(); showToast("Pesanan berhasil dialihkan ke WhatsApp!");
         }
 
-        // Animasi & Utilities
         function showToast(msg) {
             const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
-            
-            toastMsg.innerText = msg;
+            document.getElementById('toast-message').innerText = msg;
             toast.classList.remove('translate-y-32', 'opacity-0');
-            
-            setTimeout(() => {
-                toast.classList.add('translate-y-32', 'opacity-0');
-            }, 3000);
+            setTimeout(() => toast.classList.add('translate-y-32', 'opacity-0'), 3000);
         }
 
         function animateCartIcon() {
@@ -674,12 +657,11 @@
             setTimeout(() => badge.classList.remove('scale-125'), 200);
         }
 
-        // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
                 nav.classList.add('shadow-md', 'py-3');
-                nav.classList.remove('py-6'); // Kembali ke padding awal saat scroll
+                nav.classList.remove('py-6');
             } else {
                 nav.classList.remove('shadow-md', 'py-3');
                 nav.classList.add('py-6');
