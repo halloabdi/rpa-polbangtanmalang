@@ -64,53 +64,54 @@
 <body class="bg-gray-50 text-gray-800 font-sans antialiased">
 
     <!-- Navbar -->
+    <!-- Increased px and py for wider feel -->
     <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300" id="navbar">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
+        <div class="container mx-auto px-8 md:px-12 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
                 <!-- Logo Image -->
-                <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-12 w-auto object-contain">
+                <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-14 w-auto object-contain">
                 <div>
-                    <h1 class="font-bold text-lg leading-tight text-polbangtan-dark">RPA Polbangtan</h1>
-                    <p class="text-xs text-gray-500">Malang</p>
+                    <h1 class="font-bold text-xl leading-tight text-polbangtan-dark">RPA Polbangtan</h1>
+                    <p class="text-sm text-gray-500">Malang</p>
                 </div>
             </div>
             
-            <div class="flex items-center gap-6">
-                <a href="#products" class="hidden md:block font-medium hover:text-polbangtan transition">Produk</a>
-                <a href="#location" class="hidden md:block font-medium hover:text-polbangtan transition">Lokasi</a>
+            <div class="flex items-center gap-8">
+                <a href="#products" class="hidden md:block font-medium text-lg hover:text-polbangtan transition">Produk</a>
+                <a href="#location" class="hidden md:block font-medium text-lg hover:text-polbangtan transition">Lokasi</a>
                 
                 <!-- Cart Button -->
-                <button onclick="toggleCart()" class="relative bg-polbangtan hover:bg-polbangtan-dark text-white p-3 rounded-full transition shadow-lg group">
-                    <i class="fa-solid fa-shopping-cart mx-1"></i>
-                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full transform scale-0 transition-transform duration-200">0</span>
+                <button onclick="toggleCart()" class="relative bg-polbangtan hover:bg-polbangtan-dark text-white p-4 rounded-full transition shadow-lg group">
+                    <i class="fa-solid fa-shopping-cart mx-1 text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full transform scale-0 transition-transform duration-200">0</span>
                 </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <!-- Increased padding (py-32/40) and gap (gap-20) for better spacing -->
-    <section class="relative pt-40 pb-32 overflow-hidden bg-gradient-to-br from-green-50 to-green-100">
+    <!-- Increased padding top/bottom (pt-48 pb-40) and horizontal gap -->
+    <section class="relative pt-48 pb-40 overflow-hidden bg-gradient-to-br from-green-50 to-green-100">
         <!-- Decoration Circles -->
         <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-polbangtan/10 blur-3xl"></div>
         <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-yellow-300/20 blur-3xl"></div>
 
-        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-20">
-            <div class="md:w-1/2 z-10 space-y-8 text-center md:text-left">
-                <div class="inline-block px-4 py-1 bg-green-200 text-polbangtan-dark rounded-full text-sm font-semibold mb-2">
+        <div class="container mx-auto px-8 md:px-16 flex flex-col md:flex-row items-center gap-24">
+            <div class="md:w-1/2 z-10 space-y-10 text-center md:text-left">
+                <div class="inline-block px-5 py-2 bg-green-200 text-polbangtan-dark rounded-full text-sm font-semibold mb-2 shadow-sm">
                     Fresh & Higienis
                 </div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
                     Ayam Segar Langsung dari <span class="text-transparent bg-clip-text bg-gradient-to-r from-polbangtan to-teal-500">Peternakan</span>
                 </h1>
-                <p class="text-gray-600 text-lg leading-relaxed">
+                <p class="text-gray-600 text-xl leading-relaxed">
                     Kualitas terbaik dari Divisi Ayam Buras Polbangtan Malang. Halal, bersih, dan harga terjangkau untuk kebutuhan keluarga Anda.
                 </p>
-                <div class="flex gap-4 justify-center md:justify-start pt-4">
-                    <a href="#products" class="bg-polbangtan hover:bg-polbangtan-dark text-white px-10 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition transform hover:-translate-y-1">
+                <div class="flex gap-6 justify-center md:justify-start pt-6">
+                    <a href="#products" class="bg-polbangtan hover:bg-polbangtan-dark text-white px-12 py-5 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition transform hover:-translate-y-1">
                         Pesan Sekarang
                     </a>
-                    <a href="https://wa.me/6285179852558" target="_blank" class="border-2 border-polbangtan text-polbangtan hover:bg-polbangtan hover:text-white px-10 py-4 rounded-full font-semibold transition">
+                    <a href="https://wa.me/6285179852558" target="_blank" class="border-2 border-polbangtan text-polbangtan hover:bg-polbangtan hover:text-white px-12 py-5 rounded-full font-bold text-lg transition">
                         Hubungi Kami
                     </a>
                 </div>
@@ -119,64 +120,66 @@
                 <!-- Abstract Hero Image -->
                 <img src="https://i.ibb.co.com/kgnWRxZX/Gemini-Generated-Image-azy0udazy0udazy0.png" 
                      alt="Ayam Segar" 
-                     class="rounded-3xl shadow-2xl animate-float w-full max-w-md object-cover h-[450px]">
+                     class="rounded-[2.5rem] shadow-2xl animate-float w-full max-w-lg object-cover h-[500px]">
             </div>
         </div>
     </section>
 
     <!-- Product Section -->
-    <section id="products" class="py-24 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pilihan Produk Kami</h2>
-                <div class="w-24 h-1.5 bg-polbangtan mx-auto rounded"></div>
-                <p class="mt-4 text-gray-600">Diproses dengan standar kebersihan tinggi</p>
+    <!-- Increased py to 32 and container px -->
+    <section id="products" class="py-32 bg-white">
+        <div class="container mx-auto px-8 md:px-16">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-bold text-gray-900 mb-6">Pilihan Produk Kami</h2>
+                <div class="w-28 h-2 bg-polbangtan mx-auto rounded-full"></div>
+                <p class="mt-6 text-gray-600 text-lg">Diproses dengan standar kebersihan tinggi untuk keluarga Anda</p>
             </div>
 
             <!-- Product Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="product-grid">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12" id="product-grid">
                 <!-- Products will be injected via JS -->
             </div>
         </div>
     </section>
 
     <!-- Location Section -->
-    <section id="location" class="py-24 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col lg:flex-row">
-                <div class="lg:w-1/2 p-10 lg:p-16 flex flex-col justify-center">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-8">Lokasi Kami</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-5">
-                            <div class="bg-green-100 p-4 rounded-full text-polbangtan shrink-0">
-                                <i class="fa-solid fa-location-dot text-xl"></i>
+    <!-- Increased py to 32 and container px -->
+    <section id="location" class="py-32 bg-gray-50">
+        <div class="container mx-auto px-8 md:px-16">
+            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row">
+                <div class="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-10">Lokasi Kami</h2>
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-6">
+                            <div class="bg-green-100 p-5 rounded-full text-polbangtan shrink-0">
+                                <i class="fa-solid fa-location-dot text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg mb-1">Divisi Ayam Buras Polbangtan</h3>
-                                <p class="text-gray-600 leading-relaxed">Gondang, Randuangung, Kec. Singosari, Kabupaten Malang, Jawa Timur 65153</p>
+                                <h3 class="font-bold text-xl mb-2">Divisi Ayam Buras Polbangtan</h3>
+                                <p class="text-gray-600 leading-relaxed text-lg">Gondang, Randuangung, Kec. Singosari, Kabupaten Malang, Jawa Timur 65153</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-5">
-                            <div class="bg-green-100 p-4 rounded-full text-polbangtan shrink-0">
-                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <div class="flex items-start gap-6">
+                            <div class="bg-green-100 p-5 rounded-full text-polbangtan shrink-0">
+                                <i class="fa-brands fa-whatsapp text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg mb-1">Hubungi Kak Abdi</h3>
-                                <p class="text-gray-600">0851-7985-2558</p>
+                                <h3 class="font-bold text-xl mb-2">Hubungi Kak Abdi</h3>
+                                <p class="text-gray-600 text-lg">0851-7985-2558</p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-5">
-                            <div class="bg-green-100 p-4 rounded-full text-polbangtan shrink-0">
-                                <i class="fa-solid fa-clock text-xl"></i>
+                        <div class="flex items-start gap-6">
+                            <div class="bg-green-100 p-5 rounded-full text-polbangtan shrink-0">
+                                <i class="fa-solid fa-clock text-2xl"></i>
                             </div>
                             <div>
-                                <h3 class="font-bold text-lg mb-1">Jam Operasional</h3>
-                                <p class="text-gray-600">Senin - Sabtu: 08:00 - 16:00 WIB</p>
+                                <h3 class="font-bold text-xl mb-2">Jam Operasional</h3>
+                                <p class="text-gray-600 text-lg">Senin - Sabtu: 08:00 - 16:00 WIB</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="lg:w-1/2 h-96 lg:h-auto bg-gray-200 relative">
+                <div class="lg:w-1/2 h-[500px] lg:h-auto bg-gray-200 relative">
                     <!-- Google Maps Embed -->
                     <iframe 
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3951.984093951234!2d112.6395!3d-7.906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd62a00407137ad%3A0x6b00000000000000!2sPolbangtan%20Malang!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
@@ -194,15 +197,15 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-polbangtan-dark text-white py-12">
-        <div class="container mx-auto px-6 text-center">
-            <div class="mb-6 flex justify-center">
+    <footer class="bg-polbangtan-dark text-white py-16">
+        <div class="container mx-auto px-8 md:px-16 text-center">
+            <div class="mb-8 flex justify-center">
                 <!-- Footer Logo -->
-                <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-20 w-auto brightness-0 invert opacity-90">
+                <img src="https://i.ibb.co.com/CspvJ9Cm/unnamed-4.png" alt="Logo RPA Polbangtan" class="h-24 w-auto brightness-0 invert opacity-90">
             </div>
-            <h3 class="text-2xl font-bold mb-3">RPA Polbangtan Malang</h3>
-            <p class="text-green-200 mb-8 max-w-md mx-auto">Menyediakan daging ayam berkualitas, halal, dan higienis langsung dari peternakan pendidikan.</p>
-            <div class="border-t border-green-800 pt-8 text-sm text-green-300">
+            <h3 class="text-3xl font-bold mb-4">RPA Polbangtan Malang</h3>
+            <p class="text-green-200 mb-10 max-w-xl mx-auto text-lg">Menyediakan daging ayam berkualitas, halal, dan higienis langsung dari peternakan pendidikan.</p>
+            <div class="border-t border-green-800 pt-10 text-base text-green-300">
                 &copy; 2024 RPA Polbangtan Malang. All rights reserved.
             </div>
         </div>
@@ -217,41 +220,41 @@
         <div class="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl transform transition-transform translate-x-full duration-300 flex flex-col" id="cart-panel">
             
             <!-- Header -->
-            <div class="p-5 border-b flex justify-between items-center bg-gray-50">
+            <div class="p-6 border-b flex justify-between items-center bg-gray-50">
                 <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
                     <i class="fa-solid fa-shopping-basket text-polbangtan"></i> Keranjang Anda
                 </h2>
                 <button onclick="toggleCart()" class="text-gray-400 hover:text-red-500 transition">
-                    <i class="fa-solid fa-times text-xl"></i>
+                    <i class="fa-solid fa-times text-2xl"></i>
                 </button>
             </div>
 
             <!-- Cart Items Area -->
-            <div class="flex-1 overflow-y-auto p-5 no-scrollbar" id="cart-items-container">
+            <div class="flex-1 overflow-y-auto p-6 no-scrollbar" id="cart-items-container">
                 <!-- Items will be injected here -->
                 <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                    <i class="fa-solid fa-cart-arrow-down text-6xl mb-4 text-gray-200"></i>
-                    <p>Keranjang masih kosong</p>
+                    <i class="fa-solid fa-cart-arrow-down text-7xl mb-4 text-gray-200"></i>
+                    <p class="text-lg">Keranjang masih kosong</p>
                 </div>
             </div>
 
             <!-- Footer / Checkout Form -->
-            <div class="p-5 border-t bg-gray-50">
-                <div class="flex justify-between items-center mb-4 text-lg font-bold">
+            <div class="p-6 border-t bg-gray-50">
+                <div class="flex justify-between items-center mb-6 text-xl font-bold">
                     <span>Total:</span>
                     <span class="text-polbangtan" id="cart-total">Rp 0</span>
                 </div>
 
-                <div id="checkout-form" class="space-y-3 hidden">
-                    <input type="text" id="customer-name" placeholder="Nama Anda" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-polbangtan focus:outline-none">
-                    <textarea id="customer-address" rows="2" placeholder="Alamat Lengkap" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-polbangtan focus:outline-none"></textarea>
+                <div id="checkout-form" class="space-y-4 hidden">
+                    <input type="text" id="customer-name" placeholder="Nama Anda" class="w-full px-5 py-3 border rounded-xl focus:ring-2 focus:ring-polbangtan focus:outline-none">
+                    <textarea id="customer-address" rows="2" placeholder="Alamat Lengkap" class="w-full px-5 py-3 border rounded-xl focus:ring-2 focus:ring-polbangtan focus:outline-none"></textarea>
                     
-                    <button onclick="processCheckout()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow transition flex justify-center items-center gap-2">
-                        <i class="fa-brands fa-whatsapp text-xl"></i> Pesan via WhatsApp
+                    <button onclick="processCheckout()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition flex justify-center items-center gap-2 text-lg">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i> Pesan via WhatsApp
                     </button>
                 </div>
                 
-                <button id="show-checkout-btn" onclick="showCheckout()" class="w-full bg-gray-300 text-gray-500 font-bold py-3 rounded-lg cursor-not-allowed" disabled>
+                <button id="show-checkout-btn" onclick="showCheckout()" class="w-full bg-gray-300 text-gray-500 font-bold py-4 rounded-xl cursor-not-allowed text-lg" disabled>
                     Isi Keranjang Dulu
                 </button>
             </div>
@@ -264,57 +267,57 @@
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeConfirmation()"></div>
         
         <!-- Modal Content -->
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh]">
-            <div class="p-5 border-b bg-gray-50">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b bg-gray-50">
                 <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
                     <i class="fa-solid fa-circle-question text-polbangtan"></i> Konfirmasi Pesanan
                 </h3>
             </div>
             
-            <div class="p-6 space-y-4 overflow-y-auto">
-                <p class="text-gray-600 text-sm">Apakah data pesanan Anda sudah benar?</p>
+            <div class="p-8 space-y-5 overflow-y-auto">
+                <p class="text-gray-600">Apakah data pesanan Anda sudah benar?</p>
                 
                 <!-- Customer Info -->
-                <div class="bg-green-50 p-4 rounded-lg text-sm space-y-2 border border-green-100">
+                <div class="bg-green-50 p-5 rounded-xl text-sm space-y-3 border border-green-100">
                     <div class="flex justify-between items-start">
                         <span class="text-gray-500 shrink-0">Nama:</span>
-                        <span class="font-bold text-gray-800 text-right ml-4" id="confirm-name">-</span>
+                        <span class="font-bold text-gray-800 text-right ml-4 text-base" id="confirm-name">-</span>
                     </div>
                     <div class="flex justify-between items-start">
                         <span class="text-gray-500 shrink-0">Alamat:</span>
-                        <span class="font-bold text-gray-800 text-right ml-4 break-words w-2/3" id="confirm-address">-</span>
+                        <span class="font-bold text-gray-800 text-right ml-4 break-words w-2/3 text-base" id="confirm-address">-</span>
                     </div>
                 </div>
 
                 <!-- Order Summary -->
-                <div class="border rounded-lg p-3">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Ringkasan Item</h4>
-                    <div class="space-y-2 max-h-40 overflow-y-auto pr-1 no-scrollbar" id="confirm-items">
+                <div class="border rounded-xl p-4">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-3 tracking-wider">Ringkasan Item</h4>
+                    <div class="space-y-3 max-h-48 overflow-y-auto pr-2 no-scrollbar" id="confirm-items">
                         <!-- Items injected via JS -->
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center text-lg font-bold pt-2 border-t">
+                <div class="flex justify-between items-center text-lg font-bold pt-3 border-t">
                     <span>Total Bayar:</span>
-                    <span class="text-polbangtan text-xl" id="confirm-total">Rp 0</span>
+                    <span class="text-polbangtan text-2xl" id="confirm-total">Rp 0</span>
                 </div>
             </div>
 
-            <div class="p-5 border-t bg-gray-50 flex gap-3">
-                <button onclick="closeConfirmation()" class="flex-1 px-4 py-3 border border-gray-300 rounded-xl text-gray-700 font-bold hover:bg-gray-100 transition">
+            <div class="p-6 border-t bg-gray-50 flex gap-4">
+                <button onclick="closeConfirmation()" class="flex-1 px-5 py-4 border border-gray-300 rounded-xl text-gray-700 font-bold hover:bg-gray-100 transition">
                     Batal
                 </button>
-                <button onclick="confirmOrder()" class="flex-1 px-4 py-3 bg-polbangtan hover:bg-polbangtan-dark text-white rounded-xl font-bold shadow-lg transition flex justify-center items-center gap-2 hover:-translate-y-0.5 transform">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Ya, Pesan
+                <button onclick="confirmOrder()" class="flex-1 px-5 py-4 bg-polbangtan hover:bg-polbangtan-dark text-white rounded-xl font-bold shadow-lg transition flex justify-center items-center gap-2 hover:-translate-y-0.5 transform">
+                    <i class="fa-brands fa-whatsapp text-xl"></i> Ya, Pesan
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg transition-all duration-300 translate-y-20 opacity-0 z-[70] flex items-center gap-3">
-        <i class="fa-solid fa-check-circle text-green-400"></i>
-        <span id="toast-message">Item ditambahkan</span>
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-8 py-4 rounded-full shadow-2xl transition-all duration-300 translate-y-32 opacity-0 z-[70] flex items-center gap-4 border border-gray-700">
+        <i class="fa-solid fa-check-circle text-green-400 text-xl"></i>
+        <span id="toast-message" class="font-medium">Item ditambahkan</span>
     </div>
 
     <script>
@@ -370,23 +373,23 @@
         const productGrid = document.getElementById('product-grid');
         products.forEach(product => {
             const card = document.createElement('div');
-            card.className = "bg-white rounded-2xl shadow-lg overflow-hidden product-card hover:shadow-2xl transition duration-300 border border-gray-100 flex flex-col";
+            card.className = "bg-white rounded-3xl shadow-lg overflow-hidden product-card hover:shadow-2xl transition duration-300 border border-gray-100 flex flex-col";
             card.innerHTML = `
-                <div class="h-48 overflow-hidden relative">
+                <div class="h-64 overflow-hidden relative">
                     <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition duration-500 product-img" onerror="this.src='https://placehold.co/600x400?text=Ayam+Segar'">
-                    <div class="absolute top-2 right-2 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-polbangtan shadow-sm">
+                    <div class="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2 rounded-full text-xs font-bold text-polbangtan shadow-md">
                         Stok Ready
                     </div>
                 </div>
-                <div class="p-6 flex flex-col flex-grow">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">${product.name}</h3>
-                    <p class="text-gray-500 text-sm mb-4 line-clamp-2">${product.desc}</p>
-                    <div class="mt-auto flex justify-between items-center">
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3 leading-tight">${product.name}</h3>
+                    <p class="text-gray-500 mb-6 line-clamp-2 leading-relaxed">${product.desc}</p>
+                    <div class="mt-auto flex justify-between items-center pt-4 border-t border-gray-50">
                         <div>
-                            <span class="text-xs text-gray-400 block">Harga per ${product.unit}</span>
-                            <span class="text-lg font-bold text-polbangtan">${formatRupiah(product.price)}</span>
+                            <span class="text-xs text-gray-400 block mb-1">Harga per ${product.unit}</span>
+                            <span class="text-xl font-bold text-polbangtan">${formatRupiah(product.price)}</span>
                         </div>
-                        <button onclick="addToCart(${product.id})" class="bg-green-100 hover:bg-polbangtan text-polbangtan hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition duration-300 shadow-sm active:scale-95">
+                        <button onclick="addToCart(${product.id})" class="bg-green-100 hover:bg-polbangtan text-polbangtan hover:text-white w-12 h-12 rounded-full flex items-center justify-center transition duration-300 shadow-sm active:scale-95 text-lg">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
@@ -457,8 +460,8 @@
             if (cart.length === 0) {
                 itemsContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                        <i class="fa-solid fa-shopping-basket text-6xl mb-4 text-gray-200"></i>
-                        <p>Keranjang masih kosong</p>
+                        <i class="fa-solid fa-shopping-basket text-7xl mb-4 text-gray-200"></i>
+                        <p class="text-lg">Keranjang masih kosong</p>
                     </div>
                 `;
                 showCheckoutBtn.disabled = true;
@@ -470,19 +473,19 @@
             } else {
                 cart.forEach(item => {
                     const itemEl = document.createElement('div');
-                    itemEl.className = "flex gap-4 mb-4 bg-white p-3 rounded-lg shadow-sm border border-gray-100";
+                    itemEl.className = "flex gap-4 mb-5 bg-white p-4 rounded-xl shadow-sm border border-gray-100";
                     itemEl.innerHTML = `
-                        <img src="${item.image}" class="w-16 h-16 rounded-md object-cover">
+                        <img src="${item.image}" class="w-20 h-20 rounded-lg object-cover">
                         <div class="flex-1">
-                            <h4 class="font-bold text-sm text-gray-800">${item.name}</h4>
-                            <p class="text-polbangtan text-xs font-semibold">${formatRupiah(item.price)}</p>
-                            <div class="flex items-center gap-3 mt-2">
-                                <button onclick="updateQty(${item.id}, -1)" class="w-6 h-6 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-xs hover:bg-gray-300">-</button>
-                                <span class="text-sm font-medium w-4 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="w-6 h-6 rounded-full bg-polbangtan text-white flex items-center justify-center text-xs hover:bg-green-700">+</button>
+                            <h4 class="font-bold text-gray-800 text-base mb-1">${item.name}</h4>
+                            <p class="text-polbangtan text-sm font-semibold">${formatRupiah(item.price)}</p>
+                            <div class="flex items-center gap-3 mt-3">
+                                <button onclick="updateQty(${item.id}, -1)" class="w-7 h-7 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-sm hover:bg-gray-300 transition">-</button>
+                                <span class="text-base font-medium w-6 text-center">${item.qty}</span>
+                                <button onclick="updateQty(${item.id}, 1)" class="w-7 h-7 rounded-full bg-polbangtan text-white flex items-center justify-center text-sm hover:bg-green-700 transition">+</button>
                             </div>
                         </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 self-start">
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-300 hover:text-red-500 self-start p-1 transition">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                     `;
@@ -553,8 +556,8 @@
             
             const itemsList = document.getElementById('confirm-items');
             itemsList.innerHTML = pendingOrder.items.map(item => `
-                <div class="flex justify-between text-sm py-1 border-b border-gray-50 last:border-0">
-                    <span class="text-gray-700">${item.name} <span class="text-xs text-gray-400">x${item.qty}</span></span>
+                <div class="flex justify-between text-base py-2 border-b border-gray-50 last:border-0">
+                    <span class="text-gray-700">${item.name} <span class="text-sm text-gray-400">x${item.qty}</span></span>
                     <span class="font-medium text-gray-900">${formatRupiah(item.price * item.qty)}</span>
                 </div>
             `).join('');
@@ -596,10 +599,10 @@
             const toastMsg = document.getElementById('toast-message');
             
             toastMsg.innerText = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-32', 'opacity-0');
             
             setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-32', 'opacity-0');
             }, 3000);
         }
 
@@ -613,11 +616,11 @@
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('navbar');
             if (window.scrollY > 50) {
-                nav.classList.add('shadow-md', 'py-2');
-                nav.classList.remove('py-4'); // Changed from py-3 to py-4 to match new initial state
+                nav.classList.add('shadow-md', 'py-3');
+                nav.classList.remove('py-6'); // Kembali ke padding awal saat scroll
             } else {
-                nav.classList.remove('shadow-md', 'py-2');
-                nav.classList.add('py-4'); // Changed from py-3
+                nav.classList.remove('shadow-md', 'py-3');
+                nav.classList.add('py-6');
             }
         });
     </script>
