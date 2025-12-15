@@ -258,6 +258,59 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal (New Feature) -->
+    <div id="confirmation-modal" class="fixed inset-0 z-[80] hidden flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeConfirmation()"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh]">
+            <div class="p-5 border-b bg-gray-50">
+                <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-circle-question text-polbangtan"></i> Konfirmasi Pesanan
+                </h3>
+            </div>
+            
+            <div class="p-6 space-y-4 overflow-y-auto">
+                <p class="text-gray-600 text-sm">Apakah data pesanan Anda sudah benar?</p>
+                
+                <!-- Customer Info -->
+                <div class="bg-green-50 p-4 rounded-lg text-sm space-y-2 border border-green-100">
+                    <div class="flex justify-between items-start">
+                        <span class="text-gray-500 shrink-0">Nama:</span>
+                        <span class="font-bold text-gray-800 text-right ml-4" id="confirm-name">-</span>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <span class="text-gray-500 shrink-0">Alamat:</span>
+                        <span class="font-bold text-gray-800 text-right ml-4 break-words w-2/3" id="confirm-address">-</span>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="border rounded-lg p-3">
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">Ringkasan Item</h4>
+                    <div class="space-y-2 max-h-40 overflow-y-auto pr-1 no-scrollbar" id="confirm-items">
+                        <!-- Items injected via JS -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-lg font-bold pt-2 border-t">
+                    <span>Total Bayar:</span>
+                    <span class="text-polbangtan text-xl" id="confirm-total">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="p-5 border-t bg-gray-50 flex gap-3">
+                <button onclick="closeConfirmation()" class="flex-1 px-4 py-3 border border-gray-300 rounded-xl text-gray-700 font-bold hover:bg-gray-100 transition">
+                    Batal
+                </button>
+                <button onclick="confirmOrder()" class="flex-1 px-4 py-3 bg-polbangtan hover:bg-polbangtan-dark text-white rounded-xl font-bold shadow-lg transition flex justify-center items-center gap-2 hover:-translate-y-0.5 transform">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Ya, Pesan
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg transition-all duration-300 translate-y-20 opacity-0 z-[70] flex items-center gap-3">
         <i class="fa-solid fa-check-circle text-green-400"></i>
@@ -311,6 +364,7 @@
 
         // State Keranjang
         let cart = [];
+        let pendingOrder = {}; // Variabel untuk menyimpan pesanan sementara
 
         // Render Produk ke Grid
         const productGrid = document.getElementById('product-grid');
@@ -474,27 +528,66 @@
             setTimeout(() => document.getElementById('customer-name').focus(), 100);
         }
 
-        // Proses ke WhatsApp
+        // 1. Trigger saat tombol Pesan diklik (Buka Modal)
         function processCheckout() {
             const name = document.getElementById('customer-name').value.trim();
             const address = document.getElementById('customer-address').value.trim();
 
             if (!name || !address) {
-                alert("Mohon lengkapi Nama dan Alamat Anda.");
+                alert("Mohon lengkapi Nama dan Alamat Anda untuk pengiriman.");
                 return;
             }
 
-            // Build Pesan
-            let orderDetails = cart.map(item => `- ${item.name} (${item.qty} ${item.unit})`).join('\n');
-            let totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            // Simpan data ke variabel sementara
+            pendingOrder = {
+                name: name,
+                address: address,
+                items: [...cart], // Copy array cart
+                total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0)
+            };
+
+            // Isi data ke dalam Modal Konfirmasi
+            document.getElementById('confirm-name').innerText = pendingOrder.name;
+            document.getElementById('confirm-address').innerText = pendingOrder.address;
+            document.getElementById('confirm-total').innerText = formatRupiah(pendingOrder.total);
             
-            let message = `Halo Kak Abdi! Saya ${name} ingin pesan:\n\n${orderDetails}\n\nTotal Estimasi: ${formatRupiah(totalPrice)}\n\nAlamat Saya: ${address}.\n\nTerima kasih.`;
+            const itemsList = document.getElementById('confirm-items');
+            itemsList.innerHTML = pendingOrder.items.map(item => `
+                <div class="flex justify-between text-sm py-1 border-b border-gray-50 last:border-0">
+                    <span class="text-gray-700">${item.name} <span class="text-xs text-gray-400">x${item.qty}</span></span>
+                    <span class="font-medium text-gray-900">${formatRupiah(item.price * item.qty)}</span>
+                </div>
+            `).join('');
+
+            // Tampilkan Modal
+            const modal = document.getElementById('confirmation-modal');
+            modal.classList.remove('hidden');
+        }
+
+        // 2. Tutup Modal Konfirmasi
+        function closeConfirmation() {
+            document.getElementById('confirmation-modal').classList.add('hidden');
+        }
+
+        // 3. Eksekusi Pesanan ke WhatsApp (Setelah Konfirmasi)
+        function confirmOrder() {
+            // Build Pesan WhatsApp
+            let orderDetails = pendingOrder.items.map(item => `- ${item.name} (${item.qty} ${item.unit})`).join('\n');
+            
+            let message = `Halo Kak Abdi! Saya *${pendingOrder.name}* ingin pesan:\n\n${orderDetails}\n\n*Total Estimasi: ${formatRupiah(pendingOrder.total)}*\n\nAlamat Pengiriman:\n${pendingOrder.address}\n\nTerima kasih.`;
 
             // Kirim ke WA
             const phone = "6285179852558";
             const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
             
             window.open(url, '_blank');
+            
+            // Bersihkan state setelah memesan
+            closeConfirmation();
+            cart = []; // Kosongkan keranjang
+            updateCartUI(); // Update UI
+            toggleCart(); // Tutup sidebar keranjang
+            showToast("Pesanan berhasil dialihkan ke WhatsApp!");
         }
 
         // Animasi & Utilities
